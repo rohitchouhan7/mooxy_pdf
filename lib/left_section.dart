@@ -9,6 +9,8 @@ import 'package:mooxy_pdf/diode_tabbar.dart';
 import 'package:mooxy_pdf/direct_solutions_controller.dart';
 import 'package:mooxy_pdf/direct_solutions_tabbar.dart';
 import 'package:mooxy_pdf/providers.dart';
+
+
 StateProvider<bool> isLeftSectionOpen= StateProvider((ref) => true,) ;
 final pdfFilesProvider = StateNotifierProvider<PdfFilesNotifier, List<PdfFile>>((ref) {
   return PdfFilesNotifier();
@@ -19,6 +21,12 @@ class PdfFilesNotifier extends StateNotifier<List<PdfFile>> {
 
   void addPdfFile(PdfFile file) {
     state = [...state, file]; // Create a new list instance
+  }
+
+  void removePdfFile(PdfFile file){
+    state.removeWhere((element) {
+     return element.pdfId==file.pdfId;
+    },);
   }
 }
 class LeftSection extends ConsumerStatefulWidget {
@@ -42,7 +50,7 @@ class _LeftSectionState extends ConsumerState<LeftSection> with SingleTickerProv
       height: MediaQuery.sizeOf(context).height,
       color: Colors.grey[900],
       width:ref.watch(isLeftSectionOpen)==true?300:50,
-      child: Column(
+      child: ref.watch(isLeftSectionOpen)==true?Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
@@ -87,6 +95,17 @@ tabAlignment: TabAlignment.start,
               controller: _tabController,
             ),
           )
+        ],
+      ):Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              IconButton(onPressed: (){
+                ref.read(isLeftSectionOpen.notifier).state=!ref.read(isLeftSectionOpen);
+              }, icon: Icon(Icons.cancel_outlined))
+            ],
+          ),
         ],
       ),
     );

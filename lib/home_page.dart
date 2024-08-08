@@ -18,7 +18,9 @@ class _HomePageState extends ConsumerState<HomePage> {
       body: Row(
         children: [
           LeftSection(),
-          RightSection()
+         if(ref.watch(currentPdfProvider)!=null)...{ RightSection(
+
+         )}
         ],
       ),
     );

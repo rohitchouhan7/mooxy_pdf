@@ -8,6 +8,7 @@ import 'package:mooxy_pdf/diode_controller.dart' as diode_controller;
 import 'package:mooxy_pdf/direct_solutions_controller.dart';
 import 'package:mooxy_pdf/left_section.dart';
 import 'package:mooxy_pdf/providers.dart';
+import 'package:mooxy_pdf/right_section.dart';
 
 class DirectSolutionsTabBar extends ConsumerStatefulWidget {
   const DirectSolutionsTabBar({super.key});
@@ -116,7 +117,32 @@ class _DirectSolutionsTabBarState extends ConsumerState<DirectSolutionsTabBar> {
                               final pdfData=subSubBrands.pdfData[innerSubIndex];
                               return ListTile(
                                 onTap: () {
-                                  ref.read(pdfFilesProvider.notifier).addPdfFile(diode_controller.PdfFile(pdfUrl: AppStateProviders.prifixUrl+pdfData['file'], pdfName: pdfData['file'].split('/').last, pdfId: pdfData['_id']));
+                                  if(ref.read(currentPdfProvider)!=null) {
+                                    ref.read(pdfFilesProvider.notifier)
+                                        .addPdfFile(diode_controller.PdfFile(
+                                        pdfUrl: AppStateProviders.prifixUrl +
+                                            pdfData['file'],
+                                        pdfName: pdfData['file']
+                                            .split('/')
+                                            .last,
+                                        pdfId: pdfData['_id']));
+                                  }else{
+                                    ref.read(pdfFilesProvider.notifier)
+                                        .addPdfFile(diode_controller.PdfFile(
+                                        pdfUrl: AppStateProviders.prifixUrl +
+                                            pdfData['file'],
+                                        pdfName: pdfData['file']
+                                            .split('/')
+                                            .last,
+                                        pdfId: pdfData['_id']));
+                                    ref.read(currentPdfProvider.notifier).state=diode_controller.PdfFile(
+                                        pdfUrl: AppStateProviders.prifixUrl +
+                                            pdfData['file'],
+                                        pdfName: pdfData['file']
+                                            .split('/')
+                                            .last,
+                                        pdfId: pdfData['_id']);
+                                  }
                                 },
                                 title: Text(
                                     pdfData['name']),

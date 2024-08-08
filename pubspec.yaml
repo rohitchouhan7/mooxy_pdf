@@ -38,6 +38,7 @@ dependencies:
   flutter_riverpod: ^2.5.1
   dio: ^5.5.0+1
   cached_network_image: ^3.4.0
+  syncfusion_flutter_pdfviewer: ^26.2.8
 
 dev_dependencies:
   flutter_test:
